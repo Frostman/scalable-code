@@ -4,14 +4,10 @@ package tpc
  * @author slukjanov aka Frostman
  */
 
-import java.io.PrintWriter
-import java.util.concurrent.atomic.AtomicInteger
-import java.net.ServerSocket
-import java.net.Socket
-import java.io.DataInputStream
-import java.io.DataOutputStream
+import java.io.*
+import java.net.*
 import java.util.concurrent.CountDownLatch
-import java.net.SocketException
+import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args : Array<String>) = TpcExample(100).demo()
 
@@ -58,6 +54,7 @@ public class TpcExample(val clients : Int) {
             val input = DataInputStream(socket.getInputStream())
             val output = DataOutputStream(socket.getOutputStream())
             output.writeInt(input.readInt() + 1) // increment received Int
+            output.flush()
             log("connection successfully processed by $name")
         }
     }
@@ -72,7 +69,7 @@ public class TpcExample(val clients : Int) {
             if (input.readInt() != 101) {
                 throw IllegalStateException()
             }
-            socket.close()
+            output.flush()
             notProcessed.countDown()
             log("$name successfully proceed")
         }
