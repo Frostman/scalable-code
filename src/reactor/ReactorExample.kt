@@ -7,6 +7,6 @@ package reactor
 import java.nio.channels.Selector
 
 fun main(args : Array<String>) {
-    val selector = Selector.open().sure()
-    println(selector)
+    val selector = ExtSelector(4, "127.0.0.1", 8000, {ServerConnectionHandler()})
+
 }
