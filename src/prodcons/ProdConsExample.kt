@@ -17,17 +17,17 @@ public class ProdConsExample(val resourcesCount : Int, val producers : Int, val 
 
     public fun demo() {
         val start = System.currentTimeMillis()
-        println("Starting prodcons demo with $resourcesCount resources")
+        log("Starting prodcons demo with $resourcesCount resources")
         for (i in 1..consumers) Consumer(i).start()
         for (j in 1..producers) Producer(j).start()
 
-        println("$consumers consumers and $producers producers started, working...")
+        log("$consumers consumers and $producers producers started, working...")
 
         notProduced.await()
-        println("All resources produced")
+        log("All resources produced")
 
         notConsumed.await()
-        println("All resources consumed, demo takes about ${System.currentTimeMillis() - start}ms.")
+        log("All resources consumed, demo takes about ${System.currentTimeMillis() - start}ms.")
 
         output.close()
     }
@@ -65,9 +65,9 @@ public class ProdConsExample(val resourcesCount : Int, val producers : Int, val 
     public class Resource() {
         private val id : Int = nextResId.getAndIncrement()
 
-        public fun produced(producerId : Int) : Unit = println("Produced: #$id by #$producerId")
-        public fun consumed(consumerId : Int) : Unit = println("Consumed: #$id by #$consumerId")
+        public fun produced(producerId : Int) : Unit = log("Produced: #$id by #$producerId")
+        public fun consumed(consumerId : Int) : Unit = log("Consumed: #$id by #$consumerId")
     }
 
-    fun println(str : String) = output.println("$str")
+    fun log(str : String?) = output.println("$str")
 }
